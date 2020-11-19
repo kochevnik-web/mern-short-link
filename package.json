@@ -4,7 +4,8 @@
   "description": "MERN full app",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "server": "nodemon app.js"
   },
   "keywords": [
     "mern",
@@ -15,6 +16,7 @@
   "author": "Dmitriy Kovalev <kocevnik@yandex.ru>",
   "license": "ISC",
   "dependencies": {
+    "config": "^3.3.2",
     "express": "^4.17.1",
     "mongoose": "^5.10.15"
   },
