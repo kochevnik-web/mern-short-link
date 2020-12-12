@@ -4,8 +4,21 @@ const {check, validationResult} = require('express-validator');
 const User = require('../models/User')
 const router = Router();
 
-router.post('/registr', async (req, res) => {
+router.post(
+    '/registr',
+    [
+        check('email', 'Не правильно указан Email').isEmail(),
+        check('password', 'Минимальная длина пароля 6 символов').isLength({min: 6})
+    ],
+    async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if(!errors.isEmpty){
+            return res.status(400).json({
+                errors: errors.array(),
+                message: 'Некорректные данные при регистрации'
+            });
+        }
         const {email, password} = req.body;
 
         const candidat = await User.findOne({email});
