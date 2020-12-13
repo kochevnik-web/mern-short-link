@@ -1,9 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useHttp} from '../hooks/http.hook'
+import {useMessage} from '../hooks/message.hook'
 
 export default function AuthPage() {
-    const {loading, request, error} = useHttp();
+    const {loading, request, error, clearError} = useHttp();
+    const message = useMessage();
     const [form, serForm] = useState({email: '', password: ''});
+
+    useEffect(()=>{
+        message(error);
+        clearError();
+    },[error, message, clearError]);
 
     const changeHandler = e => {
         serForm({...form, [e.target.name]: e.target.value});
@@ -11,9 +18,15 @@ export default function AuthPage() {
 
     const registrHandler = async () => {
         try {
-            console.log({...form})
             const data = await request('/api/auth/registr', 'POST', {...form});
-            console.log(data);
+            message(data.message);
+        } catch (e) {}
+    }
+
+    const loginHandler = async () => {
+        try {
+            const data = await request('/api/auth/login', 'POST', {...form});
+            message(data.message);
         } catch (e) {}
     }
 
@@ -21,7 +34,7 @@ export default function AuthPage() {
         <div className="row">
             <div className="col s6 offset-s3">
                 <h1>Сократи ссылку</h1>
-                <div class="card blue darken-1">
+                <div className="card blue darken-1">
                     <div className="card-content white-text">
                         <span className="card-title">Авторизация</span>
                         <div>
@@ -46,7 +59,13 @@ export default function AuthPage() {
                         </div>
                     </div>
                     <div className="card-action">
-                        <button className="btn yellow darken-4" style={{marginRight: 10}}>Войти</button>
+                        <button
+                            className="btn yellow darken-4"
+                            style={{marginRight: 10}}
+                            onClick={loginHandler}
+                        >
+                            Войти
+                        </button>
                         <button
                             className="btn grey laghten-1 black-text"
                             onClick={registrHandler}
