@@ -1,11 +1,20 @@
 import React, {useState} from 'react';
+import {useHttp} from '../hooks/http.hook'
 
 export default function AuthPage() {
-
+    const {loading, request, error} = useHttp();
     const [form, serForm] = useState({email: '', password: ''});
 
     const changeHandler = e => {
         serForm({...form, [e.target.name]: e.target.value});
+    }
+
+    const registrHandler = async () => {
+        try {
+            console.log({...form})
+            const data = await request('/api/auth/registr', 'POST', {...form});
+            console.log(data);
+        } catch (e) {}
     }
 
     return (
@@ -38,7 +47,11 @@ export default function AuthPage() {
                     </div>
                     <div className="card-action">
                         <button className="btn yellow darken-4" style={{marginRight: 10}}>Войти</button>
-                        <button className="btn grey laghten-1 black-text">Регистрация</button>
+                        <button
+                            className="btn grey laghten-1 black-text"
+                            onClick={registrHandler}
+                        >Регистрация
+                        </button>
                     </div>
                 </div>
             </div>
