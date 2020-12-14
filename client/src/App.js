@@ -6,6 +6,8 @@ import {useRoutes} from './pages/routes';
 import {useAuth} from './hooks/auth.hook';
 import { AuthContext } from './context/AutnContext';
 
+import Navbar from './components/Navbar';
+
 function App() {
 
   const {login, logout, token, userId} = useAuth();
@@ -15,6 +17,7 @@ function App() {
   return (
     <AuthContext.Provider value={{login, logout, token, userId, isAuthenticated}}>
       <Router>
+        {isAuthenticated && <Navbar />}
         <div className="container">
           {routers}
         </div>
