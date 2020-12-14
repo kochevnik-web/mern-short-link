@@ -8,6 +8,7 @@ const app = express();
 
 app.use(express.json({extended: true}));
 app.use('/api/auth', require('./routers/auth.router'));
+app.use('/api/link', require('./routers/link.router'));
 
 async function start(){
     try {
